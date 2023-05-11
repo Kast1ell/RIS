@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+<head>
+    <title>Hello, World!</title>
+</head>
+<body>
+<h:form>
+    <h2>Users</h2>
+    <p:growl id="messages" showDetail="true"/>
+    <p:dataTable value="#{UserBean.users}" var="user">
+        <p:column headerText="ID">
+            <h:outputText value="#{user.id}"/>
+        </p:column>
+        <p:column headerText="Login">
+            <h:outputText value="#{user.login}"/>
+        </p:column>
+        <p:column headerText="Password">
+            <h:outputText value="#{user.password}"/>
+        </p:column>
+        <p:column style="width: 100px">
+            <p:commandButton id="editButton" icon="pi pi-pencil" action="#{userBean.prepareEditUser(user)}"
+                             update=":editForm"/>
+            <p:commandButton id="deleteButton" icon="pi pi-trash" action="#{userBean.deleteUser(user)}"
+                             update=":messages"/>
+        </p:column>
+    </p:dataTable>
+    <p:commandButton id="addButton" value="Add" actionListener="#{userBean.prepareAddUser}" update=":addForm"/>
+</h:form>
+
+<p:dialog id="editDialog" header="Edit User" widgetVar="editDialog" resizable="false">
+    <h:form id="editForm">
+        <h:inputHidden value="#{userBean.user.id}"/>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Login"/>
+            <h:inputText value="#{userBean.user.login}" required="true"/>
+
+            <h:outputLabel value="Password"/>
+            <h:inputText value="#{userBean.user.password}" required="true"/>
+
+            <h:panelGroup/>
+            <p:commandButton id="saveButton" value="Save" action="#{userBean.updateUser}"
+                             update=":messages, :usersTable, editDialog" oncomplete="PF('editDialog').hide()"/>
+            <p:commandButton id="cancelButton" value="Cancel" onclick="PF('editDialog').hide()"/>
+        </h:panelGrid>
+    </h:form>
+</p:dialog>
+
+<p:dialog id="addDialog" header="Add User" widgetVar="addDialog" resizable="false">
+    <h:form id="addForm">
+        <h:inputHidden value="#{userBean.user.id}"/>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Login"/>
+            <h:inputText value="#{userBean.user.login}" required="true"/>
+
+            <h:outputLabel value="Password"/>
+            <h:inputText value="#{userBean.user.password}" required="true"/>
+
+            <h:panelGroup/>
+            <p:commandButton id="addSaveButton" value="Save" action="#{userBean.saveUser}"
+                             update=":messages, :usersTable, addDialog" oncomplete="PF('addDialog').hide()"/>
+            <p:commandButton id="addCancelButton" value="Cancel" onclick="PF('addDialog').hide()"/>
+        </h:panelGrid>
+    </h:form>
+</p:dialog>
+
+<p:dialog id="searchDialog" header="Search Users" widgetVar="searchDialog" resizable="false">
+    <h:form id="searchForm">
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Login"/>
+            <h:inputText value="#{userBean.loginSearch}" required="true"/>
+            <h:panelGroup/>
+            <p:commandButton id="searchButton" value="Search" action="#{userBean.searchUsers}"
+                             update=":messages, :usersTable, searchDialog" oncomplete="PF('searchDialog').hide()"/>
+            <p:commandButton id="searchCancelButton" value="Cancel" onclick="PF('searchDialog').hide()"/>
+        </h:panelGrid>
+    </h:form>
+</p:dialog>
+<p:commandButton id="searchButton2" value="Search" onclick="PF('searchDialog').show()"/>
+<p:commandButton id="refreshButton" value="Refresh" actionListener="#{userBean.refreshUsers}" update=":usersTable" />
+</body>
+</html>

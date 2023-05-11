@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>User Profiles CRUD</title>
+</h:head>
+
+<h:body>
+    <h:form>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="First Name:"/>
+            <p:inputText value="#{userProfileBean.userProfiles.firstName}" required="true"/>
+
+            <h:outputLabel value="Last Name:"/>
+            <p:inputText value="#{userProfileBean.userProfiles.lastName}" required="true"/>
+
+            <h:outputLabel value="Email:"/>
+            <p:inputText value="#{userProfileBean.userProfiles.email}" required="true"/>
+
+            <h:outputLabel value="Phone:"/>
+            <p:inputText value="#{userProfileBean.userProfiles.phone}" required="true"/>
+
+            <p:commandButton value="Save" action="#{userProfileBean.saveUser()}" update="userTable"/>
+            <p:commandButton value="Delete" action="#{userProfileBean.deleteUser(userProfiles)}" update="userTable"/>
+
+        </h:panelGrid>
+        <p:separator/>
+
+        <p:dataTable id="userTable" var="user" value="#{userProfileBean.userProfilesList}" paginator="true" rows="10">
+            <p:column headerText="ID" style="width: 10%">
+                <h:outputText value="#{user.id}"/>
+            </p:column>
+
+            <p:column headerText="First Name">
+                <h:outputText value="#{user.firstName}"/>
+            </p:column>
+
+            <p:column headerText="Last Name">
+                <h:outputText value="#{user.lastName}"/>
+            </p:column>
+
+            <p:column headerText="Email">
+                <h:outputText value="#{user.email}"/>
+            </p:column>
+
+            <p:column headerText="Phone">
+                <h:outputText value="#{user.phone}"/>
+            </p:column>
+
+            <p:column headerText="Edit" style="width: 10%">
+                <p:commandButton value="Edit" action="#{userProfileBean.updateUser()}" update="userTable">
+                    <f:setPropertyActionListener value="#{user}" target="#{userProfileBean.userProfiles}"/>
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>

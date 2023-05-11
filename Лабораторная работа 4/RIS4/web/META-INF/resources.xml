@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <Resource id="ConnectionFactory" type="javax.jms.ConnectionFactory">
+        JmsXA
+    </Resource>
+    <Resource id="Queue" type="javax.jms.Queue">
+        test
+    </Resource>
+</resources>
